@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Assistant</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Dwaynewisdom/CSS@7cb5eb6712cde1d53a5de626491b94779ea80d85/CSS.css">
+</head>
+<body>
+    <h1 class="heading">Dwayne, Student Assistant</h1>
+
+    <!-- Task Manager -->
+    <div class="container">
+        <h2>Task Manager</h2>
+        <ul id="taskList">
+            <!-- Tasks will be added here dynamically -->
+        </ul>
+        <div class="add-task">
+            <input type="text" id="taskInput" placeholder="New Task">
+            <input type="date" id="taskDateInput">
+            <button id="addtask" onclick="addTask()">Add Task</button>
+        </div>
+    </div>
+
+    <!-- Exams -->
+    <div class="container">
+        <h2>Exams</h2>
+        <ul id="examList">
+            <!-- Exams will be added here dynamically -->
+        </ul>
+        <div class="add-exam">
+            <input type="text" id="examInput" placeholder="New Exam">
+            <input type="date" id="examDateInput">
+            <button id="addtask" onclick="addExam()">Add Exam</button>
+        </div>
+    </div>
+
+    <!-- Study Material -->
+    <div class="container">
+        <h2>Study Material</h2>
+        <ul id="courseList">
+            <!-- Courses will be added here dynamically -->
+        </ul>
+        <div class="add-course">
+            <input type="text" id="courseInput" placeholder="New Course">
+            <button id="addtask"onclick="addCourse()">Add Course</button>
+        </div>
+    </div>
+
+    <!-- Grade Tracker -->
+    <div class="container">
+        <h2>Grade Tracker</h2>
+        <table id="gradeTable">
+            <thead>
+                <tr>
+                    <th class="Head">Course</th>
+                    <th class="Head">Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Grades will be added here dynamically -->
+            </tbody>
+        </table>
+        <div class="add-grade">
+            <input type="text" id="courseNameInput" placeholder="Course Name">
+            <input type="text" id="gradeInput" placeholder="Grade">
+            <button id="addtask" onclick="addGrade()">Add Grade</button>
+        </div>
+    </div>
+
+    <script>
+       // Initialize data structures
+let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
+let exams = JSON.parse(localStorage.getItem('exams')) || [];
+let courses = JSON.parse(localStorage.getItem('courses')) || [];
+let grades = JSON.parse(localStorage.getItem('grades')) || [];
+
+// Save data to localStorage
+function saveData() {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+    localStorage.setItem('exams', JSON.stringify(exams));
+    localStorage.setItem('courses', JSON.stringify(courses));
+    localStorage.setItem('grades', JSON.stringify(grades));
+}
+
+// Render all data
+function renderAll() {
+    renderTasks();
+    renderExams();
+    renderCourses();
+    renderGrades();
+}
+
+// Task functions
+function addTask() {
+    const taskInput = document.getElementById('taskInput');
+    const taskDateInput = document.getElementById('taskDateInput');
+    
+    if (taskInput.value.trim() === '') return;
+    
+    const task = {
+        id: Date.now(),
+        text: taskInput.value.trim(),
+        dueDate: taskDateInput.value,
+        completed: false
+    };
+    
+    tasks.push(task);
+    saveData();
+    renderTasks();
+    
+    taskInput.value = '';
+    taskDateInput.value = '';
+}
+
+function toggleTask(id) {
+    const task = tasks.find(task => task.id === id);
+    if (task) {
+        task.completed = !task.completed;
+        saveData();
+        renderTasks();
+    }
+}
+
+function deleteTask(id) {
+    tasks = tasks.filter(task => task.id !== id);
+    saveData();
+    renderTasks();
+}
+
+function renderTasks() {
+    const taskList = document.getElementById('taskList');
+    taskList.innerHTML = '';
+    
+    tasks.forEach(task => {
+        const li = document.createElement('li');
+        li.className = 'task-item' + (task.completed ? ' completed' : '');
+        
+        li.innerHTML = `
+            <input type="checkbox" ${task.completed ? 'checked' : ''} onchange="toggleTask(${task.id})">
+            <span>${task.text}</span>
+            ${task.dueDate ? `<span class="due-date">(${new Date(task.dueDate).toLocaleDateString()})</span>` : ''}
+            <button onclick="deleteTask(${task.id})">Delete</button>
+        `;
+        
+        taskList.appendChild(li);
+    });
+}
+
+// Exam functions
+function addExam() {
+    const examInput = document.getElementById('examInput');
+    const examDateInput = document.getElementById('examDateInput');
+    
+    if (examInput.value.trim() === '') return;
+    
+    const exam = {
+        id: Date.now(),
+        text: examInput.value.trim(),
+        date: examDateInput.value
+    };
+    
+    exams.push(exam);
+    saveData();
+    renderExams();
+    
+    examInput.value = '';
+    examDateInput.value = '';
+}
+
+function deleteExam(id) {
+    exams = exams.filter(exam => exam.id !== id);
+    saveData();
+    renderExams();
+}
+
+function renderExams() {
+    const examList = document.getElementById('examList');
+    examList.innerHTML = '';
+    
+    exams.forEach(exam => {
+        const li = document.createElement('li');
+        li.className = 'examlist-item'; // Added the missing class
+        
+        li.innerHTML = `
+            <span>${exam.text}</span>
+            ${exam.date ? `<span class="exam-date">(${new Date(exam.date).toLocaleDateString()})</span>` : ''}
+            <button onclick="deleteExam(${exam.id})">Delete</button>
+        `;
+        
+        examList.appendChild(li);
+    });
+}
+
+// Course functions
+function addCourse() {
+    const courseInput = document.getElementById('courseInput');
+    
+    if (courseInput.value.trim() === '') return;
+    
+    const course = {
+        id: Date.now(),
+        text: courseInput.value.trim()
+    };
+    
+    courses.push(course);
+    saveData();
+    renderCourses();
+    
+    courseInput.value = '';
+}
+
+function deleteCourse(id) {
+    courses = courses.filter(course => course.id !== id);
+    saveData();
+    renderCourses();
+}
+
+function renderCourses() {
+    const courseList = document.getElementById('courseList');
+    courseList.innerHTML = '';
+    
+    courses.forEach(course => {
+        const li = document.createElement('li');
+        li.className = 'add-course-item'; // Added class for consistency
+        
+        li.innerHTML = `
+            <span>${course.text}</span>
+            <button onclick="deleteCourse(${course.id})">Delete</button>
+        `;
+        
+        courseList.appendChild(li);
+    });
+}
+
+// Grade functions
+function addGrade() {
+    const courseNameInput = document.getElementById('courseNameInput');
+    const gradeInput = document.getElementById('gradeInput');
+    
+    if (courseNameInput.value.trim() === '' || gradeInput.value.trim() === '') return;
+    
+    const grade = {
+        id: Date.now(),
+        course: courseNameInput.value.trim(),
+        grade: gradeInput.value.trim()
+    };
+    
+    grades.push(grade);
+    saveData();
+    renderGrades();
+    
+    courseNameInput.value = '';
+    gradeInput.value = '';
+}
+
+function deleteGrade(id) {
+    grades = grades.filter(grade => grade.id !== id);
+    saveData();
+    renderGrades();
+}
+
+function renderGrades() {
+    const gradeTable = document.getElementById('gradeTable').querySelector('tbody');
+    gradeTable.innerHTML = '';
+    
+    grades.forEach(grade => {
+        const tr = document.createElement('tr');
+        tr.className = 'add-grade-item'; // Added class for consistency
+        
+        tr.innerHTML = `
+            <td>${grade.course}</td>
+            <td>${grade.grade}</td>
+            <td><button onclick="deleteGrade(${grade.id})">Delete</button></td>
+        `;
+        
+        gradeTable.appendChild(tr);
+    });
+}
+
+// Initialize the app
+window.onload = function() {
+    renderAll();
+    
+    // Add some example data if empty
+    if (tasks.length === 0) {
+        tasks = [
+            {id: 1, text: "Complete Math homework", dueDate: "2023-10-15", completed: false},
+            {id: 2, text: "Read History chapter 5", dueDate: "2023-10-18", completed: true}
+        ];
+    }
+    
+    if (exams.length === 0) {
+        exams = [
+            {id: 1, text: "Math Midterm", date: "2023-10-25"},
+            {id: 2, text: "History Final", date: "2023-12-15"}
+        ];
+    }
+    
+    if (courses.length === 0) {
+        courses = [
+            {id: 1, text: "Calculus Textbook"},
+            {id: 2, text: "Physics Problems"}
+        ];
+    }
+    
+    if (grades.length === 0) {
+        grades = [
+            {id: 1, course: "Mathematics", grade: "A"},
+            {id: 2, course: "History", grade: "B+"}
+        ];
+    }
+    
+    saveData();
+    renderAll();
+};
+    </script>
+</body>
+</html>
