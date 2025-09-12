@@ -176,11 +176,10 @@
             padding: 10px;
         }
         #gradeInput{
-            flex:1;
             border-radius:50px;
             color: black;
             border: none;
-            padding:10px;
+            padding:5px;
             width: 100px;
         }
             
@@ -212,4 +211,5 @@
         button:hover {
             background-color: red;
         }
+
 
