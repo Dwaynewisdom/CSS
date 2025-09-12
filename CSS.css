@@ -175,14 +175,6 @@
             border: none;
             padding: 10px;
         }
-        #gradeInput{
-            border-radius:50px;
-            color: black;
-            border: none;
-            padding:5px;
-            width: 100px;
-        }
-            
 
         #addGradeBtn {
             border-radius: 50px;
@@ -211,5 +203,6 @@
         button:hover {
             background-color: red;
         }
+
 
 
