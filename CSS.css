@@ -1,1 +1,213 @@
+.heading{
+    color: Black;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    font-size: 40px;
+    text-shadow: 2px 2px 4px #AAAAAA;
+}
+
+.container {
+    width: auto;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #AE3B3B;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding-top: 20px;
+    margin: 30px auto;
+    height: auto;
+}
+
+#taskList{
+    list-style-type: none;
+    padding: 0;
+    margin: 5px;
+    color:white
+}
+
+.add-task{
+    display: flex;
+    margin-bottom: 0px;
+    gap: 10px;
+}
+
+#taskInput{
+    flex: 1;
+    border-radius: 50px;
+    color: black;
+    border: none;
+}
+#taskDateInput{
+    border-radius: 50px;
+    color: black;
+    border: none;
+}
+
+#addtask{
+    border-radius: 50px;
+    background-color: black;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+#addtask:hover{
+    background-color: red;
+}
+
+.task-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+.task-item:nth-child(odd){
+    background-color: #140d0d;
+    border-radius: 50px;
+}
+
+#examList{
+   list-style-type: none;
+    padding: 0;
+    margin: 5px;
+    color:white
+}
+.add-exam{
+    display: flex;
+    margin-bottom: 0px;
+    gap: 10px;
+}
+#examInput{
+    flex: 1;
+    border-radius: 50px;
+    color: black;
+    border: none;
+}
+#examDateInput{
+    border-radius: 50px;
+    color: black;
+    border: none;
+}
+.examlist-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+.examlist-item:nth-child(odd){
+    background-color: #140d0d;
+    border-radius: 50px;
+}
+
+#courseList{
+    list-style-type: none;
+    padding: 0;
+    margin: 5px;
+    color:white
+}
+
+.add-course{
+    display: flex;
+    margin-bottom: 0px;
+    gap: 10px;
+}
+#courseInput{
+    flex: 1;
+    border-radius: 50px;
+    color: black;
+    border: none;
+}
+
+.add-course-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.add-course-item:nth-child(odd){
+    background-color: #140d0d;
+    border-radius: 50px;
+}
+
+.add-grade{
+    display: flex;
+    margin-bottom: 0px;
+    gap: 10px;
+}
+
+#courseNameInput{
+    flex: 1;
+    border-radius: 50px;
+    color: rgb(239, 239, 239);
+    border: none;
+}
+
+
+    #gradeTable {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            color: white;
+        }
+
+        #gradeTable th, #gradeTable td {
+            padding: 10px;
+            text-align: left;
+            border: none;
+        }
+
+        #gradeTable th {
+            background-color: #140d0d;
+            border-radius: 50px;
+        }
+
+        .add-grade {
+            display: flex;
+            margin-bottom: 0px;
+            gap: 10px;
+        }
+
+        #courseNameInput{
+            width: 200px;
+            border-radius: 50px;
+            color: black;
+            border: none;
+            padding: 10px;
+        }
+        #gradeInput{
+            border-radius: 50px;
+            color: black;
+            border: none;
+            padding: 10px;
+            width: 100px;
+        }
+
+        #addGradeBtn {
+            border-radius: 50px;
+            background-color: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px 20px;
+        }
+
+        #addGradeBtn:hover {
+            background-color: red;
+        }
+
+        /* Button styles */
+        button {
+            border-radius: 50px;
+            background-color: black;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            margin-left: 5px;
+        }
+
+        button:hover {
+            background-color: red;
+        }
 
