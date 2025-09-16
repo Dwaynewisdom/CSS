@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Assistant</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Dwaynewisdom/CSS@7cb5eb6712cde1d53a5de626491b94779ea80d85/CSS.css">
+    <link rel="stylesheet" href="CSS.css">
 </head>
 <body>
     <h1 class="heading">Dwayne, Student Assistant</h1>
@@ -65,6 +65,23 @@
             <input type="text" id="courseNameInput" placeholder="Course Name">
             <input type="text" id="gradeInput" placeholder="Grade">
             <button id="addtask" onclick="addGrade()">Add Grade</button>
+        </div>
+
+    </div>
+
+    <!-- AI Assistant -->
+     <div class="container">
+        <h2>AI Assistant</h2>
+        <div id="aiChat" class="ai-chat">
+            <div class="message ai-message">
+                Hello! I'm here to help you with your studies. Ask me anything!</div>
+            <br>
+            </div>
+
+        <div class="ai-input">
+            <input type="text" id="aiInput" placeholder="Ask me a question...">
+            <button id="addtask" onclick="askAI()">Send</button>
+            <button id="addtask" onclick="askAI()">Ask</button>
         </div>
     </div>
 
@@ -282,38 +299,137 @@ function renderGrades() {
 window.onload = function() {
     renderAll();
     
-    // Add some example data if empty
-    if (tasks.length === 0) {
-        tasks = [
-            {id: 1, text: "Complete Math homework", dueDate: "2023-10-15", completed: false},
-            {id: 2, text: "Read History chapter 5", dueDate: "2023-10-18", completed: true}
-        ];
-    }
-    
-    if (exams.length === 0) {
-        exams = [
-            {id: 1, text: "Math Midterm", date: "2023-10-25"},
-            {id: 2, text: "History Final", date: "2023-12-15"}
-        ];
-    }
-    
-    if (courses.length === 0) {
-        courses = [
-            {id: 1, text: "Calculus Textbook"},
-            {id: 2, text: "Physics Problems"}
-        ];
-    }
-    
-    if (grades.length === 0) {
-        grades = [
-            {id: 1, course: "Mathematics", grade: "A"},
-            {id: 2, course: "History", grade: "B+"}
-        ];
-    }
+    // Ensure data is saved on page unload
+    window.onbeforeunload =
     
     saveData();
     renderAll();
 };
+
+// AI Assistant functions
+        async function askAI() {
+            const input = document.getElementById('aiInput');
+            const button = document.getElementById('aiButton');
+            const chat = document.getElementById('aiChat');
+            
+            if (!input.value.trim()) return;
+            
+            // Add user message to chat
+            const userMessage = document.createElement('div');
+            userMessage.className = 'message user-message';
+            userMessage.textContent = input.value;
+            chat.appendChild(userMessage);
+            
+            // Add thinking indicator
+            const thinking = document.createElement('div');
+            thinking.className = 'message ai-message thinking';
+            thinking.textContent = 'Thinking...';
+            chat.appendChild(thinking);
+            
+            // Clear input and disable button
+            const question = input.value;
+            input.value = '';
+            button.disabled = true;
+            
+            // Scroll to bottom
+            chat.scrollTop = chat.scrollHeight;
+            
+            try {
+                // Replace with your preferred AI API
+                const response = await callAI(question);
+                
+                // Remove thinking indicator
+                chat.removeChild(thinking);
+                
+                // Add AI response
+                const aiMessage = document.createElement('div');
+                aiMessage.className = 'message ai-message';
+                aiMessage.textContent = response;
+                chat.appendChild(aiMessage);
+            } catch (error) {
+                // Remove thinking indicator
+                chat.removeChild(thinking);
+                
+                // Add error message
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'message ai-message';
+                errorMessage.textContent = 'Sorry, I encountered an error. Please try again.';
+                chat.appendChild(errorMessage);
+                
+                console.error('AI Error:', error);
+            }
+            
+            // Re-enable button
+            button.disabled = false;
+            
+            // Scroll to bottom
+            chat.scrollTop = chat.scrollHeight;
+        }
+        
+        // Function to call AI API (you need to implement this based on your chosen AI service)
+        async function callAI(question) {
+            // Option 1: OpenAI API (requires API key)
+            // return await callOpenAI(question);
+            
+            // Option 2: Hugging Face API (free tier available)
+            // return await callHuggingFace(question);
+            
+            // Option 3: Local AI (if you have one set up)
+            // return await callLocalAI(question);
+            
+            // For now, returning a mock response
+            return `I received your question: "${question}". This is a mock response. Set up a real AI API to get actual answers.`;
+        }
+        
+        // Example implementation for OpenAI API
+        async function callOpenAI(question) {
+            // You need an OpenAI API key for this
+            const apiKey = 'YOUR_OPENAI_API_KEY'; // Replace with your actual API key
+            
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'gpt-3.5-turbo',
+                    messages: [
+                        {role: 'system', content: 'You are a helpful study assistant for college students.'},
+                        {role: 'user', content: question}
+                    ],
+                    max_tokens: 500
+                })
+            });
+            
+            const data = await response.json();
+            return data.choices[0].message.content;
+        }
+        
+        
+        async function callHuggingFace(question) {
+            
+            const apiToken = 'YOUR_HUGGING_FACE_TOKEN'; // Replace with your actual token
+            
+            const response = await fetch(
+                'https://api-inference.huggingface.co/models/microsoft/DialoGPT-large',
+                {
+                    headers: { Authorization: `Bearer ${apiToken}` },
+                    method: 'POST',
+                    body: JSON.stringify({ inputs: question }),
+                }
+            );
+            
+            const result = await response.json();
+            return result.generated_text;
+        }
+        
+        
+        document.getElementById('aiInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                askAI();
+            }
+        });
     </script>
 </body>
 </html>
